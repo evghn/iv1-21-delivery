@@ -32,7 +32,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <header id="header">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => "<div class='text-danger'>" 
+                            . Yii::$app->name
+                            . "</div>",
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
@@ -40,8 +42,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Main page', 'url' => ['/my-main']],
+            ['label' => 'Hello user', 'url' => ['/my-main/hello']],
+            //['label' => 'About', 'url' => ['/site/about']],
+            //['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
@@ -64,7 +68,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
         <?php endif ?>
         <?= Alert::widget() ?>
-        <?= $content ?>
+        <div class='mt-5 mx-5 px-5 py-4 vh-100 bg-primary-subtle'>
+            <!-- load my page -->
+            <?= $content ?> 
+        </div>        
     </div>
 </main>
 

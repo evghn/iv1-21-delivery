@@ -38,6 +38,8 @@ class SiteController extends Controller
         ];
     }
 
+//http://iv1-21-delivery/    site  /  about
+
     /**
      * {@inheritdoc}
      */
@@ -124,5 +126,11 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    //url: my-page  --> actionMyPage
+    public function actionMyPage()    
+    {
+        return $this->render('my-page');
     }
 }
