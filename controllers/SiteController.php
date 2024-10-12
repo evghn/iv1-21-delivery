@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\RegisterForm;
+use yii\helpers\VarDumper;
 
 class SiteController extends Controller
 {
@@ -132,5 +134,21 @@ class SiteController extends Controller
     public function actionMyPage()    
     {
         return $this->render('my-page');
+    }
+
+
+    public function actionRegister()
+    {
+        $model = new RegisterForm();
+
+        if (Yii::$app->request->isPost && $model->load($this->request->post())) {
+            // VarDumper::dump($model->attributes, 10, true); die;            
+            if ($user = $model->userRegister()) {                
+                Yii::$app->user->login($user, 3600*24*30);
+                return $this->redirect('/');
+            }
+        }
+
+        return $this->render('register', compact('model'));
     }
 }
