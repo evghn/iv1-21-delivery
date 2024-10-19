@@ -53,6 +53,14 @@ $config = [
             ],
         ],        
     ],
+
+    'modules' => [
+        // url
+        'admin-panel' => [
+            'class' => 'app\modules\admin\Module',
+            'defaultRoute' => 'admin' // name controller
+        ],
+    ],
     'params' => $params,
 ];
 
