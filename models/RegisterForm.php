@@ -20,8 +20,7 @@ class RegisterForm extends Model
     public string $phone = '';
     public string $password = '';
     public string $password_repeat = '';
-    public bool   $rules = false;
-
+    public bool $rules = false;
 
     /**
      * @return array the validation rules.
@@ -31,10 +30,28 @@ class RegisterForm extends Model
         return [
             // name, email, subject and body are required
             [['name', 'surname', 'login', 'email', 'phone', 'password_repeat', 'password'], 'required'],
-            [['name', 'surname', 'patronymic', 'login', 'email', 'phone', 'password_repeat', 'password'], 'string', 'max' => 255],            
+            [['name', 'surname', 'patronymic', 'login', 'email', 'phone', 'password_repeat', 'password'], 'string', 'max' => 255], 
+            // ['name', 'string', 'min' => 3], 
+            // [['name', 'surname', 'patronymic'], 'match', 'pattern' => '/^[А-Яа-яЁё\s\-]+$/u', 'message' => 'Только кириллица, пробел, тире'],          
+            [['name', 'surname', 'patronymic'], 'match', 'pattern' => '/^[а-яё\s\-]+$/ui', 'message' => 'Только кириллица, пробел, тире'],
+            // ['login', 'match', 'pattern' => '/^[a-z0-9\-]$/i', 'message' => 'Латиница, тире, цифры'],          
+            ['login', 'match', 'pattern' => '/^[a-z\-\d]+$/i', 'message' => 'Латиница, тире, цифры'],
+            [['login', 'email'], 'unique', 'targetClass' => User::class],
+            // [['login', 'email'], 'unique', 'targetClass' => User::class],
+           
+
+            ['password', 'string', 'min' => 6],  
+            ['password', 'match', 'pattern' => '/^[a-z\d]+$/i', 'message' => 'Латиница, тире, цифры'],
+            ['password_repeat', 'compare', 'compareAttribute' => 'password'],
+
+
+            // ['password', 'match', 'pattern' => '/^[a-z\d]{6,}}$/i', 'message' => 'Латиница, тире, цифры, минимум 6 символов'],       
+            // +7(XXX)-XXX-XX-XX   
+            // ['phone', 'match', 'pattern' => '/^\+7\([0-9]{3}\)\-[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/', 'message' => 'формат: +7(XXX)-XXX-XX-XX'],
+            ['phone', 'match', 'pattern' => '/^\+7\([\d]{3}\)\-[\d]{3}(\-[\d]{2}){2}$/'],
             // email has to be a valid email address
             ['email', 'email'],
-            ['rules', 'required'],            
+            ['rules', 'required', 'requiredValue' => true, 'message' => 'Необходимо  отметить согласие с правилами регистрации'],
         ];
     }
 
@@ -89,7 +106,7 @@ class RegisterForm extends Model
             }
         } else {
             // data - error
-            VarDumper::dump($this->errors, 10, true); die;
+            // VarDumper::dump($this->errors, 10, true); die;
         }   
         
         return $user ?? false;
