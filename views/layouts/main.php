@@ -45,7 +45,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 ? ['label' => 'Регистрация', 'url' => ['/site/register']]
                 : "",
             !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
-                ? ['label' => 'Панель администратора', 'url' => ['/admin']]
+                ? ['label' => 'Панель администратора', 'url' => ['/admin-panel']]
                 : "",
                 
             

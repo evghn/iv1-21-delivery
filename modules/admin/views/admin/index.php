@@ -1,7 +1,12 @@
+<?php
+
+use yii\bootstrap5\Html;
+
+?>
 <div class="admin-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
+    <h3>Панель администратора</h3>
     <p>
-       admin controller action index
+       <?= Html::a('Управление категориями', ['category/index'], ['class' => 'btn btn-primary']) ?>
     </p>
     <p>
         You may customize this page by editing the following file:<br>
