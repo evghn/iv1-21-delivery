@@ -34,7 +34,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'format' => 'html',
-                'value' => fn($model) => Html::img("/img/" . $model->photo, ['class' => 'me-5 w-25', 'alt' => 'product']) . $model->title,
+                'value' => fn($model) => Html::img("/img/" . ($model->photo ?? $model::NO_PHOTO), ['class' => 'me-5 w-25', 'alt' => 'product']) . $model->title,
+                // 'value' => fn($model) => ($model->photo ? Html::img("/img/" . $model->photo, ['class' => 'me-5 w-25', 'alt' => 'product']) : "") . $model->title,
+
+
             ],            
             
             'price',

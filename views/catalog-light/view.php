@@ -1,42 +1,23 @@
 <?php
 
-use app\models\Product;
-use yii\bootstrap5\Html;
-use yii\helpers\VarDumper;
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var app\models\Product $model */
 
-$this->title = "Товар: " . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Товары', 'url' => ['index']];
+$this->title = $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Каталог товаров (light)', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
-
-
-//  VarDumper::dump($model->attributes, 10, true);
-// VarDumper::dump($categoryes, 10, true); 
-//  die;
 ?>
 <div class="product-view">
 
-    <h3><?= Html::encode($this->title) ?></h3>
-    <p>
-        <?= Html::a('Назад', ['index'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Редактирование', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Удаление', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Вы точно хотите удалить данный товар?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+    <h3>Товар: <?= Html::encode($this->title) ?></h3>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'title',
             'price',
             'count',

@@ -76,7 +76,8 @@ class ProductController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
                 $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-                if ($model->upload()) {
+                // VarDumper::dump($model->imageFile, 10, true); die;                
+                if (is_null($model->imageFile) || $model->upload()) {
                     if ($model->save(false)) {
                         return $this->redirect(['view', 'id' => $model->id]);
                     } else {
@@ -107,7 +108,7 @@ class ProductController extends Controller
         $model = $this->findModel($id);
         if ($this->request->isPost && $model->load($this->request->post())) {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($model->upload()) {
+            if (is_null($model->imageFile) || $model->upload()) {
                 if ($model->save(false)) {
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {

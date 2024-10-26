@@ -24,6 +24,7 @@ use Yii;
  */
 class Product extends \yii\db\ActiveRecord
 {
+    public const NO_PHOTO = 'noPhoto.jpg';
 
     public $imageFile;
 
@@ -47,7 +48,7 @@ class Product extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['title', 'photo', 'shelf_life'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg'],
         ];
     }
 

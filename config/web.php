@@ -7,6 +7,7 @@ $config = [
     'id' => 'basic',
     'name' => "My project",
     'language' => 'ru-RU',
+    'defaultRoute' => '/catalog',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
