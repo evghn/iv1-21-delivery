@@ -84,6 +84,17 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
+    /**
+     * Gets query for [[Favourites]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFavourites()
+    {
+        return $this->hasMany(Favourite::class, ['product_id' => 'id']);
+    }
+    
+
 
     public function upload()
     {

@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Product;
+use Yii;
 
 /**
  * ProductSearch represents the model behind the search form of `app\models\Product`.
@@ -42,7 +43,18 @@ class ProductSearch extends Product
     public function search($params)
     {
         $query = Product::find()
-                            ->with('category');
+                            ->with(['category',
+                                'favourites' => function($query) {
+                                    $query->andWhere(['user_id' => Yii::$app->user->id]);
+                                },
+                        ]);
+
+        // $customers = Customer::find()->with([
+        //     'country',
+        //     'orders' => function ($query) {
+        //         $query->andWhere(['status' => Order::STATUS_ACTIVE]);
+        //     },
+        // ])
 
         // add conditions that should always apply here
 

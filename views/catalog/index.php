@@ -19,7 +19,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h3><?= Html::encode($this->title) ?></h3>
 
-    <?php Pjax::begin(); ?>
+    <!-- <button id='btn-test'>test</button> -->
+    
+    
+    <?php Pjax::begin([
+        'id' => 'catalog-pjax',
+        'enablePushState' => false,
+        'timeout' => 5000,
+    ]); ?>
+        <div class="block-link">
+        <?= Html::a('link test1', '', ['class' => 'btn btn-primary btn-test', 'data-id' => 1]) ?>
+        <?= Html::a('link test2', '', ['class' => 'btn btn-primary btn-test', 'data-id' => 2]) ?>
+        </div>
     
    
     <div class="my-3 d-flex justify-content-between align-items-end">
