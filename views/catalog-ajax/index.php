@@ -22,6 +22,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- <button id='btn-test'>test</button> -->
 
 
+    <div class="my-3 d-flex justify-content-between align-items-end">
+        <div class="form-group">
+            Сортировка:
+            <div class="d-flex gap-2 ">
+                <?= $dataProvider->sort->link('title') ?> | <?= $dataProvider->sort->link('price') ?> | <?= $dataProvider->sort->link('count') ?> |
+                <?= Html::a('сбросить', ['/catalog'], ["class" => "text-decoration-none"]) ?>
+            </div>
+        </div>
+        <div class="d-flex gap-3">
+            <?= $this->render('_search', [
+                'model' => $searchModel,
+                'categoryes' => $categoryes
+            ]);  ?>
+        </div>
+    </div>
     <?php Pjax::begin([
         'id' => 'catalog-pjax',
         'enablePushState' => false,
@@ -33,21 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
 
-        <div class="my-3 d-flex justify-content-between align-items-end">
-            <div class="form-group">
-                Сортировка:
-                <div class="d-flex gap-2 ">
-                    <?= $dataProvider->sort->link('title') ?> | <?= $dataProvider->sort->link('price') ?> | <?= $dataProvider->sort->link('count') ?> |
-                    <?= Html::a('сбросить', ['/catalog'], ["class" => "text-decoration-none"]) ?>
-                </div>
-            </div>
-            <div class="d-flex gap-3">
-                <?= $this->render('_search', [
-                    'model' => $searchModel,
-                    'categoryes' => $categoryes
-                ]);  ?>
-            </div>
-        </div>
 
         <?= ListView::widget([
             'dataProvider' => $dataProvider,

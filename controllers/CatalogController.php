@@ -10,6 +10,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 
 /**
  * CatalogController implements the CRUD actions for Product model.
@@ -66,6 +67,11 @@ class CatalogController extends Controller
             'dataProvider' => $dataProvider,
             'categoryes' => Category::getCategoryes(),
         ]);
+    }
+
+    public function actionFavourite($id)
+    {
+        var_dump($id); die;
     }
 
     /**

@@ -42,12 +42,16 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Каталог', 'url' => ['/catalog']],
+            ['label' => 'Каталог Ajax', 'url' => ['/catalog-ajax']],
             ['label' => 'Каталог light', 'url' => ['/catalog-light']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Регистрация', 'url' => ['/site/register']]
                 : "",
             !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
                 ? ['label' => 'Панель администратора', 'url' => ['/admin-panel']]
+                : "",
+            !Yii::$app->user->isGuest && !Yii::$app->user->identity->isAdmin
+                ? ['label' => 'Личный кабинет', 'url' => ['/account']]
                 : "",
                 
             
