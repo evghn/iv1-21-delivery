@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php ActiveForm::end(); ?>
 
             <div style="color:#999;">
-                В системе пользователи: <strong>user/123</strong>.<br>
+                В системе пользователи: <strong>user/123</strong> <strong>admin/123</strong>.<br>
                 
             </div>
 

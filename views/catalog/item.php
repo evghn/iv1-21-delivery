@@ -28,5 +28,11 @@ use yii\bootstrap5\Html;
             : ""
       ?>
     </div>
+    <div class="w-100 mt-2">
+        <?= ! Yii::$app->user->isGuest && ! Yii::$app->user->identity->isAdmin
+              ? Html::a('Купить', ['/account/order/create', 'product_id' => $model->id], ['class' => 'w-100 btn btn-success'])
+              : ""
+        ?>
+    </div>
   </div>
 </div>

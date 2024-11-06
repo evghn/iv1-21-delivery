@@ -93,6 +93,17 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Favourite::class, ['product_id' => 'id']);
     }
+
+
+        /**
+     * Gets query for [[Orders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrders()
+    {
+        return $this->hasMany(Order::class, ['product_id' => 'id']);
+    }
     
 
 

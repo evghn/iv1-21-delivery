@@ -93,6 +93,17 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(Favourite::class, ['user_id' => 'id']);
     }
 
+
+        /**
+     * Gets query for [[Orders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrders()
+    {
+        return $this->hasMany(Order::class, ['user_id' => 'id']);
+    }
+
     
     public static function findIdentity($id)
     {
@@ -149,5 +160,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function getIsAdmin()
     {
         return $this->role_id == Role::getRoleId('admin');
+    }
+
+
+    public function getFio()
+    {
+        return $this->surname
+                . " "
+                . $this->name
+                . ($this->patronymic ? " " . $this->patronymic : "");
     }
 }

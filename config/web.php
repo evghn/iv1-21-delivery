@@ -59,11 +59,12 @@ $config = [
         // url
         'admin-panel' => [
             'class' => 'app\modules\admin\Module',
-            'defaultRoute' => 'admin' // name controller
+            'defaultRoute' => 'order' // name controller
         ],
       
         'account' => [
             'class' => 'app\modules\account\Module',
+            'defaultRoute' => 'order' // name controller
         ],
     ],
     'params' => $params,
