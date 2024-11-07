@@ -8,9 +8,12 @@ use app\models\Status;
 use app\models\TypePay;
 use app\modules\account\models\OrderSearch;
 use Yii;
+use yii\bootstrap5\ActiveForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
+use yii\web\Response;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -71,13 +74,22 @@ class OrderController extends Controller
      */
     public function actionCreate($product_id)
     {
-        $model = new Order();
+        $model = new Order(['scenario' => Order::OREDER_DEFAULT]);
         $model->product_id = $product_id;
         $model->user_id = Yii::$app->user->id;
         $model->status_id = Status::getStatusId('Новый');
 
         $typePay = TypePay::getTypePay();
         $outpost = Outpost::getOutpost();
+
+        
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            // VarDumper::dump($model->attributes, 10, true); 
+            // VarDumper::dump($model->check, 10, true); 
+            // die;
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {

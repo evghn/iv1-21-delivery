@@ -10,7 +10,9 @@ use yii\bootstrap5\ActiveForm;
 
 <div class="order-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'id' => 'order-form'
+    ]); ?>
 
     <div class="mx-3">
         Покупка товара: 
@@ -31,15 +33,32 @@ use yii\bootstrap5\ActiveForm;
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'outpost_id')->dropdownList($outpost,['prompt'=>'Выберете пункт выдачи']); ?> 
+    <?= $form->field($model, 'outpost_id', ['enableAjaxValidation' => true])->dropdownList($outpost,['prompt'=>'Выберете пункт выдачи']); ?> 
 
-    <?= $form->field($model, 'comment')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'check', [
+            'validateOnBlur' => false, 
+            // 'validateOnChange' => true, 
+            'enableAjaxValidation' => true,
+            'options' => [
+                'class' => 'mb-3'
+            ] 
+
+        ])->checkbox() ?>
+
+    <?= $form->field($model, 'comment', [
+            'enableAjaxValidation' => true,
+            'options' =>['class' => 'd-none ']
+        ])->textInput(['maxlength' => true]) ?>
    
    
-    <div class="form-group">
+    <div class="form-group mt-5">
         <?= Html::submitButton('Создать завказ', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+
+$this->registerJsFile('/js/order.js', ['depends' => 'yii\web\JqueryAsset']);
