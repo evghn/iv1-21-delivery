@@ -28,6 +28,11 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
+
+    const SCENARIO_OUTPOST = 'outpost';
+    const SCENARIO_COMMENT = 'comment';
+    public bool $check = false;
+
     /**
      * {@inheritdoc}
      */
@@ -42,15 +47,19 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'date', 'time', 'type_pay_id', 'address', 'outpost_id', 'status_id', 'user_id'], 'required'],
+            [['product_id', 'date', 'time', 'type_pay_id', 'address', 'status_id', 'user_id'], 'required'],
             [['product_id', 'type_pay_id', 'outpost_id', 'status_id', 'user_id'], 'integer'],
             [['date', 'time', 'created_at'], 'safe'],
             [['address', 'comment', 'comment_admin'], 'string', 'max' => 255],
+            ['check', 'boolean'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
             [['type_pay_id'], 'exist', 'skipOnError' => true, 'targetClass' => TypePay::class, 'targetAttribute' => ['type_pay_id' => 'id']],
             [['outpost_id'], 'exist', 'skipOnError' => true, 'targetClass' => Outpost::class, 'targetAttribute' => ['outpost_id' => 'id']],
+            ['outpost_id', 'required', 'on' => self::SCENARIO_OUTPOST],
+            ['comment', 'required', 'on' => self::SCENARIO_COMMENT],
+            // ['address', 'match', 'pattern'=> '/[a-'],
         ];
     }
 
@@ -72,6 +81,7 @@ class Order extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'comment_admin' => 'Comment Admin',
             'created_at' => 'Created At',
+            'check' => 'Другой вариант получения',
         ];
     }
 

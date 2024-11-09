@@ -39,7 +39,8 @@ $this->title = "Покупка: " . $model->product->title;
             'address',
             [
                 'attribute' => 'outpost_id',
-                'value' => $model->outpost->title,
+                'value' => $model->outpost?->title,
+                'visible' => (bool)$model->outpost?->title,
             ],
             [
                 'attribute' => 'type_pay_id',
@@ -51,7 +52,7 @@ $this->title = "Покупка: " . $model->product->title;
             ],   
             [
                 'attribute' => 'comment',
-                'visible' => (bool)$model->comment_admin,
+                'visible' => (bool)$model->comment,
             ],
             [
                 'attribute' => 'comment_admin',
