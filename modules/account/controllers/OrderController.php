@@ -11,6 +11,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -71,6 +72,40 @@ class OrderController extends Controller
      */
     public function actionCreate($product_id)
     {
+        $model = new Order(['scenario' => Order::SCENARIO_OUTPOST]);
+        $model->product_id = $product_id;
+        $model->user_id = Yii::$app->user->id;
+        $model->status_id = Status::getStatusId('Новый');
+
+        $typePay = TypePay::getTypePay();
+        $outpost = Outpost::getOutpost();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                
+                if ($model->check) {
+                    // scenario - comment
+                    $model->scenario = Order::SCENARIO_COMMENT;
+                } 
+                
+                if ($model->save())  {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'typePay' => $typePay,
+            'outpost' => $outpost,
+        ]);
+    }
+
+
+    public function actionCreate2($product_id)
+    {
         $model = new Order();
         $model->product_id = $product_id;
         $model->user_id = Yii::$app->user->id;
@@ -80,14 +115,26 @@ class OrderController extends Controller
         $outpost = Outpost::getOutpost();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                
+                if ($model->check) {
+                    // scenario - comment
+                    $model->scenario = Order::SCENARIO_COMMENT;
+                } else {
+                    $model->scenario = Order::SCENARIO_OUTPOST;
+                }
+                
+                if ($model->save())  {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+
+                $model->scenario = Order::SCENARIO_DEFAULT;
             }
         } else {
             $model->loadDefaultValues();
         }
 
-        return $this->render('create', [
+        return $this->render('create2', [
             'model' => $model,
             'typePay' => $typePay,
             'outpost' => $outpost,
