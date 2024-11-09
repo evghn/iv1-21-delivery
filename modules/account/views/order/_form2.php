@@ -11,9 +11,22 @@ use yii\widgets\Pjax;
 ?>
 
 <div class="order-form">
-
+<?php Pjax::begin([
+    'id' => 'order-pjax',
+    'enablePushState' => false,
+    'timeout' => 10000,
+]) ?>
     <?php $form = ActiveForm::begin([
         'id' => 'form-order',
+        'options' => [
+            'data-pjax' => true,
+            
+            /* 
+            'data' => [
+                'pjax' => true,
+            ]
+            */
+        ]
     ]); ?>
 
     <div class="mx-3">
@@ -46,12 +59,12 @@ use yii\widgets\Pjax;
     </div>
 
     <?php ActiveForm::end(); ?>
-
+<?php Pjax::end() ?>
 </div>
 
 <?php
 
 // $this->registerJsFile('/js/order.js', ['depends' => 'yii\web\JqueryAsset']);
-$this->registerJsFile('/js/order.js', ['depends' => JqueryAsset::class]);
+$this->registerJsFile('/js/order2.js', ['depends' => JqueryAsset::class]);
 
 ?>

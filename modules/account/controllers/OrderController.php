@@ -89,8 +89,8 @@ class OrderController extends Controller
                 } 
                 
                 if ($model->save())  {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
