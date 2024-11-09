@@ -115,8 +115,7 @@ class OrderController extends Controller
         $outpost = Outpost::getOutpost();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                
+            if ($model->load($this->request->post())) {                
                 if ($model->check) {
                     // scenario - comment
                     $model->scenario = Order::SCENARIO_COMMENT;
