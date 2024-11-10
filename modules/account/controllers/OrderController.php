@@ -103,6 +103,51 @@ class OrderController extends Controller
         ]);
     }
 
+
+    public function actionCreate3($product_id)
+    {
+        $model = new Order();
+        $model->product_id = $product_id;
+        $model->user_id = Yii::$app->user->id;
+        $model->status_id = Status::getStatusId('Новый');
+
+        $typePay = TypePay::getTypePay();
+        $outpost = Outpost::getOutpost();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {                
+                if ($model->check) {
+                    // scenario - comment
+                    $model->scenario = Order::SCENARIO_COMMENT;
+                    $model->outpost_id = null;
+                } else {
+                    $model->scenario = Order::SCENARIO_OUTPOST;
+                    $model->comment = null;
+                }
+                
+                if ($this->request->isPjax) {
+                    $model->validate();
+                    return $this->renderAjax('_form3', [ 
+                        'model' => $model,
+                        'typePay' => $typePay,
+                        'outpost' => $outpost
+                    ]);
+                }
+                if ($model->save())  {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('create3', [
+            'model' => $model,
+            'typePay' => $typePay,
+            'outpost' => $outpost,
+        ]);
+    }
+
     /**
      * Updates an existing Order model.
      * If update is successful, the browser will be redirected to the 'view' page.

@@ -59,7 +59,6 @@ class Order extends \yii\db\ActiveRecord
             [['outpost_id'], 'exist', 'skipOnError' => true, 'targetClass' => Outpost::class, 'targetAttribute' => ['outpost_id' => 'id']],
             ['outpost_id', 'required', 'on' => self::SCENARIO_OUTPOST],
             ['comment', 'required', 'on' => self::SCENARIO_COMMENT],
-            // ['address', 'match', 'pattern'=> '/[a-'],
         ];
     }
 
