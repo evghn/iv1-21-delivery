@@ -39,7 +39,8 @@ $this->title = "Покупка: " . $model->product->title;
             'address',
             [
                 'attribute' => 'outpost_id',
-                'value' => $model->outpost->title,
+                'value' => $model->outpost?->title,                
+                'visible' => (bool)$model->outpost_id,
             ],
             [
                 'attribute' => 'type_pay_id',
