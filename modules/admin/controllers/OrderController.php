@@ -3,7 +3,10 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Order;
+use app\models\Status;
+use app\models\TypePay;
 use app\modules\admin\models\OrderSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -41,9 +44,14 @@ class OrderController extends Controller
         $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $statusList = Status::getStatusList();
+        $typePay = TypePay::getTypePay();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'statusList' => $statusList,
+            'typePay' => $typePay,
         ]);
     }
 
@@ -58,6 +66,20 @@ class OrderController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+
+    public function actionApply($id)
+    {
+        if ($model = Order::findOne($id)) {
+            if ($model->status_id == Status::getStatusId('Новый')) {
+                $model->status_id = Status::getStatusId('Готовый к выдаче');
+                $model->save();
+                Yii::$app->session->setFlash('success', "Статус заказ №$model->id изменен на - \"Готов к выдаче\"!");
+            }
+        }
+
+        return $this->redirect(['index']);
     }
 
     /**
@@ -89,12 +111,17 @@ class OrderController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionCancel($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = Order::SCENARIO_CANCEL;
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->status_id = Status::getStatusId('Отмена');
+            if ($model->save()) {
+                Yii::$app->session->setFlash('info', "Статус заказ №$model->id изменен на - \"Отменен\"!");
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

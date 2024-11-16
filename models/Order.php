@@ -31,6 +31,8 @@ class Order extends \yii\db\ActiveRecord
 
     const SCENARIO_OUTPOST = 'outpost';
     const SCENARIO_COMMENT = 'comment';
+    const SCENARIO_CANCEL = 'cancel';
+
     public bool $check = false;
 
     /**
@@ -59,6 +61,7 @@ class Order extends \yii\db\ActiveRecord
             [['outpost_id'], 'exist', 'skipOnError' => true, 'targetClass' => Outpost::class, 'targetAttribute' => ['outpost_id' => 'id']],
             ['outpost_id', 'required', 'on' => self::SCENARIO_OUTPOST],
             ['comment', 'required', 'on' => self::SCENARIO_COMMENT],            
+            ['comment_admin', 'required', 'on' => self::SCENARIO_CANCEL],            
         ];
     }
 
@@ -68,7 +71,7 @@ class Order extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => '№ заказа',
             'product_id' => 'Product ID',
             'date' => 'Date',
             'time' => 'Time',

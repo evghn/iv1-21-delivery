@@ -33,12 +33,16 @@ $this->title = "Покупка: " . $model->product->title;
                 'attribute' => 'product_id',
                 'value' => $model->product->title,
             ],
-            'date',
+            [
+                'attribute' => 'date',
+                'format' => ['date', 'php:d.m.Y'],
+            ],
             'time',
             'address',
             [
                 'attribute' => 'outpost_id',
-                'value' => $model->outpost->title,
+                'value' => $model->outpost?->title,
+                'visible' => (bool)$model->outpost_id,
             ],
             [
                 'attribute' => 'type_pay_id',

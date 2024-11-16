@@ -35,22 +35,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             [
-                'attribute' => 'product_id',
-                'value'  => fn($model) => $model->product->title,
+                'attribute' => 'id',
+                'headerOptions' => [
+                    'width' => 100
+                ],
             ],
             [
                 'label' => "Дата и время заказа",
                 'value' => fn($model) => 
-                    Yii::$app->formatter->asDate($model->date, "dd.mm.yyyy")
+                    Yii::$app->formatter->asDate($model->date, "dd.MM.yyyy")
                         . " " 
                         . $model->time,
             ],
             [
+                'attribute' => 'user_id',
+                'value'  => fn($model) => $model->user->fio,
+            ],
+            [
                 'attribute' => 'type_pay_id',
                 'value'  => fn($model) => $model->typePay->title,
+                'filter' => $typePay,
             ],
             //'address',
             //'outpost_id',
@@ -58,17 +63,19 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status_id',
                 'value'  => fn($model) => $model->status->title,
-            ],            
+                'filter' => $statusList,
+            ],         
             [
                 'label' => "Действия", 
                 'format' => 'raw',
                 'value' => function ($model) {
                     $btn_view = Html::a("Просмотр", ['view', 'id' => $model->id], ['class' => "btn btn-primary mx-2"]);
+                    $btn_apply = '';
+                    $btn_cancel = '';
                     if ($model->status->id == Status::getStatusId('Новый')) {
                         $btn_apply = Html::a("Подтвердить", ['apply', 'id' => $model->id], ['class' => "btn btn-success"]);
                         $btn_cancel = Html::a("Отменить", ['cancel', 'id' => $model->id], ['class' => "btn btn-warning mx-2 my-2"]);
-                    }
-                    
+                    }                   
 
                     return $btn_view . $btn_apply . $btn_cancel;
                 }
