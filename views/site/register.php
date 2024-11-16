@@ -7,6 +7,7 @@
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 use yii\captcha\Captcha;
+use yii\widgets\MaskedInput;
 
 $this->title = 'Регистрация';
 $this->params['breadcrumbs'][] = $this->title;
@@ -29,8 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'password')->passwordInput() ?>
 
             <?= $form->field($model, 'password_repeat')->passwordInput() ?>
-
-            <?= $form->field($model, 'phone') ?>
+             <!-- +7(XXX)-XXX-XX-XX  -->
+            <?= $form->field($model, 'phone')->widget(MaskedInput::class, [
+                'mask' => '+9(999)-999-99-99'
+            ]) ?>
 
             <?= $form->field($model, 'rules')->checkbox() ?>
 

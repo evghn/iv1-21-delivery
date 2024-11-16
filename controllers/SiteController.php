@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\RegisterForm;
+use Symfony\Component\VarDumper\VarDumper as VarDumperVarDumper;
 use yii\helpers\VarDumper;
 
 class SiteController extends Controller
@@ -50,11 +51,7 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            ],            
         ];
     }
 
@@ -81,7 +78,12 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            Yii::$app->session->setFlash('success', "Пользователь успешно авторизован в системе");
+            return $this->redirect(
+                Yii::$app->user->identity->isAdmin
+                    ? '/admin-panel'
+                    : '/account'
+            );
         }
 
         $model->password = '';
@@ -98,27 +100,12 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
+        Yii::$app->session->setFlash('info', "Вы упешно вышли из системы!");
 
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
+    
 
     /**
      * Displays about page.
@@ -142,10 +129,13 @@ class SiteController extends Controller
         $model = new RegisterForm();
 
         if (Yii::$app->request->isPost && $model->load($this->request->post())) {
-            // VarDumper::dump($model->attributes, 10, true); die;            
+            // VarDumper::dump($model->attributes, 10, true); 
+            // VarDumperVarDumper::dump($model->attributes); 
+            // die;            
             if ($user = $model->userRegister()) {                
                 Yii::$app->user->login($user, 3600*24*30);
-                return $this->redirect('/');
+                Yii::$app->session->setFlash('success', "Пользователь успешно зарегистрирован");
+                return $this->redirect('/account');
             }
         }
 

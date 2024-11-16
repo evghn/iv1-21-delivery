@@ -6,3 +6,71 @@
     color: #aaa;
     margin-left: 5px;
 }
+
+.is-invalid {
+    animation: invalid 0.8s ease 1;
+}
+
+.is-valid {
+    animation: isvalid .8s ease 1;
+}
+
+.invalid-feedback {
+    animation: feedback .8s ease 1;
+}
+
+#main {    
+    animation: main .6s ease 1;
+}
+
+
+
+/* @keyframes main {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+} */
+
+@keyframes main {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+@keyframes feedback {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes invalid {
+    0%, 50%, 100% {
+        transform: translateY(0);
+    }
+    25%, 75% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes isvalid {
+    0%, 25% {
+        box-shadow: 0 0 1px rgb(2, 66, 2);
+    }    
+    50%, 75% {
+        box-shadow: 0 0 10px green;
+    }
+    100% {
+        box-shadow: 0 0 1px rgb(2, 66, 2);
+    }    
+}
+

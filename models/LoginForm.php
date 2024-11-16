@@ -2,8 +2,10 @@
 
 namespace app\models;
 
+use Symfony\Component\VarDumper\VarDumper as VarDumperVarDumper;
 use Yii;
 use yii\base\Model;
+use yii\helpers\VarDumper;
 
 /**
  * LoginForm is the model behind the login form.
@@ -49,6 +51,7 @@ class LoginForm extends Model
 
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect login or password.');
+                Yii::$app->session->setFlash('error', "Введены на корректные логин - пароль!");
             }
         }
     }
@@ -61,6 +64,12 @@ class LoginForm extends Model
     {
         if ($this->validate()) {
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+        } else {
+
+            my_dump($this->attributes, $this->errors, [], 1, 'ok', __FILE__, __FILE__); 
+            // VarDumper::dump($this->attributes, 10, true); 
+            // VarDumperVarDumper::dump($this->errors); 
+            die;
         }
         return false;
     }
