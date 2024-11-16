@@ -5,6 +5,7 @@ namespace app\modules\account\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Order;
+use Yii;
 
 /**
  * OrderSearch represents the model behind the search form of `app\models\Order`.
@@ -41,12 +42,19 @@ class OrderSearch extends Order
     public function search($params)
     {
         $query = Order::find()
-                        ->with(['product', 'typePay', 'status']);
+            ->with(['product', 'typePay', 'status'])
+            // ->where(['user_id' => Yii::$app->user->id])
+        ;
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [                
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
         ]);
 
         $this->load($params);
@@ -66,7 +74,7 @@ class OrderSearch extends Order
             'type_pay_id' => $this->type_pay_id,
             'outpost_id' => $this->outpost_id,
             'status_id' => $this->status_id,
-            'user_id' => $this->user_id,
+            'user_id' => Yii::$app->user->id,
         ]);
 
         $query->andFilterWhere(['like', 'address', $this->address])

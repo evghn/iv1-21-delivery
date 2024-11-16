@@ -34,7 +34,7 @@ use yii\widgets\Pjax;
 
             <?= $form->field($model, 'address')->textInput(['maxlength' => true, 'class' => 'form-control ' . ($model->address ? 'is-valid' : '')]) ?>
 
-            <?= $form->field($model, 'outpost_id')->dropDownList(Outpost::getOutpost(), ['prompt' => 'Выберете пункт выдачи', 'class' => 'form-control ' . ($model->outpost_id ? 'is-valid' : '')]) ?>
+            <?= $form->field($model, 'outpost_id')->dropDownList(Outpost::getOutpost(), ['prompt' => 'Выберете пункт выдачи', 'disabled' => (bool)$model->check, 'class' => 'form-control ' . ($model->comment ? 'is-valid' : '')]) ?>
 
             <?= $form->field($model, 'check')->checkbox() ?>
 

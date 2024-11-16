@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Order $model */
 
-$this->title = "Покупка: " . $model->product->title;
+$this->title = "Покупка: <b>" . $model->product->title . '</b>';
 ?>
 <div class="order-view">
 
@@ -34,7 +34,10 @@ $this->title = "Покупка: " . $model->product->title;
                 'attribute' => 'product_id',
                 'value' => $model->product->title,
             ],
-            'date',
+            [
+                'attribute' => 'date',
+                'format' => ['date', 'php:d.m.Y'],
+            ],
             'time',
             'address',
             [

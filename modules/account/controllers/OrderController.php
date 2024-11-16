@@ -45,10 +45,14 @@ class OrderController extends Controller
     {
         $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $statusList = Status::getStatusList();
+        $typePay = TypePay::getTypePay();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'statusList' => $statusList,
+            'typePay' => $typePay,
         ]);
     }
 
@@ -89,6 +93,7 @@ class OrderController extends Controller
                 } 
                 
                 if ($model->save())  {
+                    Yii::$app->session->setFlash('success', "Заказ успешно создан!");
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
@@ -208,7 +213,7 @@ class OrderController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        Yii::$app->session->setFlash('info', "Заказ удален!");
         return $this->redirect(['index']);
     }
 

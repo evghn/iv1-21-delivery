@@ -34,13 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => "Дата и время заказа",
                 'value' => fn($model) => 
-                    Yii::$app->formatter->asDate($model->date, "dd.mm.yyyy")
+                    Yii::$app->formatter->asDate($model->date, "dd.MM.yyyy")
                         . " " 
                         . $model->time,
             ],
             [
                 'attribute' => 'type_pay_id',
                 'value'  => fn($model) => $model->typePay->title,
+                'filter' => $typePay,
+                'filterInputOptions' => [
+                    'class' => 'form-control',                     
+                    'prompt' => 'Все варианты оплаты'
+                ],
             ],
             //'address',
             //'outpost_id',
@@ -48,6 +53,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status_id',
                 'value'  => fn($model) => $model->status->title,
+                'filter' => $statusList,
+                'filterInputOptions' => [
+                    'class' => 'form-control',                     
+                    'prompt' => 'Все статусы'
+                ],
             ],            
             [
                 'label' => "Действия", 
