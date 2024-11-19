@@ -106,7 +106,7 @@ class OrderController extends Controller
 
     public function actionCreate3($product_id)
     {
-        $model = new Order();
+        $model = new Order(['scenario' => Order::SCENARIO_OUTPOST]);
         $model->product_id = $product_id;
         $model->user_id = Yii::$app->user->id;
         $model->status_id = Status::getStatusId('Новый');
@@ -120,8 +120,7 @@ class OrderController extends Controller
                     // scenario - comment
                     $model->scenario = Order::SCENARIO_COMMENT;
                     $model->outpost_id = null;
-                } else {
-                    $model->scenario = Order::SCENARIO_OUTPOST;
+                } else {                    
                     $model->comment = null;
                 }
                 
@@ -133,6 +132,7 @@ class OrderController extends Controller
                         'outpost' => $outpost
                     ]);
                 }
+                
                 if ($model->save())  {
                     return $this->redirect(['view', 'id' => $model->id]);
                 }

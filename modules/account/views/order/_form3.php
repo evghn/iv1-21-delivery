@@ -48,7 +48,7 @@ use yii\widgets\Pjax;
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'outpost_id')->dropdownList($outpost,['prompt'=>'Выберете пункт выдачи']); ?> 
+        <?= $form->field($model, 'outpost_id')->dropdownList($outpost,['prompt'=>'Выберете пункт выдачи', 'disabled' => $model->check]); ?> 
 
         <?= $form->field($model, 'check')->checkbox() ?>
 
