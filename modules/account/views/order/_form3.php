@@ -26,19 +26,19 @@ use yii\widgets\Pjax;
             'id' => 'form-order',           
         ]); ?>
   
-            <?= $form->field($model, 'date')->textInput(['type' => 'date', 'class' => 'form-control ' . ($model->date ? 'is-valid' : '')]) ?>
+            <?= $form->field($model, 'date')->textInput(['type' => 'date']) ?>
 
-            <?= $form->field($model, 'time')->textInput(['type' => 'time', 'class' => 'form-control ' . ($model->time ? 'is-valid' : '')]) ?>
+            <?= $form->field($model, 'time')->textInput(['type' => 'time']) ?>
 
-            <?= $form->field($model, 'type_pay_id')->dropDownList(TypePay::getTypePay(), ['prompt' => 'Выберете способ оплаты', 'class' => 'form-control ' . ($model->type_pay_id ? 'is-valid' : '')]) ?>
+            <?= $form->field($model, 'type_pay_id')->dropDownList(TypePay::getTypePay(), ['prompt' => 'Выберете способ оплаты']) ?>
 
-            <?= $form->field($model, 'address')->textInput(['maxlength' => true, 'class' => 'form-control ' . ($model->address ? 'is-valid' : '')]) ?>
+            <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'outpost_id')->dropDownList(Outpost::getOutpost(), ['prompt' => 'Выберете пункт выдачи', 'disabled' => (bool)$model->check, 'class' => 'form-control ' . ($model->comment ? 'is-valid' : '')]) ?>
+            <?= $form->field($model, 'outpost_id')->dropDownList(Outpost::getOutpost(), ['prompt' => 'Выберете пункт выдачи', 'disabled' => (bool)$model->check]) ?>
 
             <?= $form->field($model, 'check')->checkbox() ?>
 
-            <?= $form->field($model, 'comment')->textInput(['maxlength' => true, 'disabled' => ! (bool)$model->check, 'class' => 'form-control ' . ($model->comment ? 'is-valid' : '')]) ?>
+            <?= $form->field($model, 'comment')->textInput(['maxlength' => true, 'disabled' => ! (bool)$model->check]) ?>
 
             <div class="form-group">
                 <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

@@ -8,5 +8,9 @@ $(() => {
             replaceState: false,
             timeout: 5000,
         })
-    })    
+    })
+
+    $('#order-pjax').on('pjax:complete', function() {
+        $('#form-order').submit();
+    })
 })
