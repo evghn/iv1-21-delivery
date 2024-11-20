@@ -19,7 +19,7 @@ use yii\widgets\Pjax;
     <?php $form = ActiveForm::begin([
         'id' => 'form-order',
         'options' => [
-            'data-pjax' => true,
+            'data-pjax' => false,
             
             /* 
             'data' => [
