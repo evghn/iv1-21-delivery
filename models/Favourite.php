@@ -48,6 +48,8 @@ class Favourite extends \yii\db\ActiveRecord
             'product_id' => 'Product ID',
             'user_id' => 'User ID',
             'status' => 'Status',
+            // 'product_category' => 'Категория товара',
+            // 'product_title' => 'Название товара',
         ];
     }
 

@@ -27,6 +27,12 @@ class Module extends \yii\base\Module
                     // разрешаем аутентифицированным пользователям
                     [
                         'allow' => true,
+                        'controllers' => ['admin-panel/login'],
+                        'actions' => ['index'],
+                        'roles' => ['?'],                        
+                    ],
+                    [
+                        'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => fn() => Yii::$app->user->identity->isAdmin,
                     ],

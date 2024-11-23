@@ -7,6 +7,7 @@ $config = [
     'id' => 'basic',
     'name' => "My project",
     'language' => 'ru-RU',
+    'timeZone' => 'Europe/Moscow',
     'defaultRoute' => '/catalog',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -52,7 +53,8 @@ $config = [
             'showScriptName' => false,
             'rules' => [
             ],
-        ],        
+        ],
+
     ],
 
     'modules' => [

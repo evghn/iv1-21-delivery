@@ -11,13 +11,15 @@ use yii\widgets\Pjax;
 /** @var app\modules\account\models\OrderSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Orders';
+$this->title = 'Заказы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
+    <h3><?= Html::encode($this->title) ?></h3>
+    <div class="my-3">
+        <?= Html::a('Избранное', ['/account/favourite'], ['class' => 'btn btn-info']) ?>
+    </div>
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 

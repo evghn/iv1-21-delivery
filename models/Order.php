@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "order".
@@ -61,7 +62,9 @@ class Order extends \yii\db\ActiveRecord
             [['outpost_id'], 'exist', 'skipOnError' => true, 'targetClass' => Outpost::class, 'targetAttribute' => ['outpost_id' => 'id']],
             ['outpost_id', 'required', 'on' => self::SCENARIO_OUTPOST],
             ['comment', 'required', 'on' => self::SCENARIO_COMMENT],            
-            ['comment_admin', 'required', 'on' => self::SCENARIO_CANCEL],            
+            ['comment_admin', 'required', 'on' => self::SCENARIO_CANCEL],
+            ['date', 'validateDate'],  
+            // ['type_pay_id', 'validateTypePay'],  
         ];
     }
 
@@ -86,6 +89,44 @@ class Order extends \yii\db\ActiveRecord
             'check' => 'Другой вариант получения',
         ];
     }
+
+
+    public function validateDate($attribute, $params)
+    {
+        // VarDumper::dump($this->attributes, 10, true); die;
+        // нельзя забронировать если на это время есть заявка со статусом новая, в работе
+        $query = self::find()
+            ->where([
+                'date' => $this->date,
+                'time' => $this->time,
+                'status_id' => [Status::getStatusId('Новый'), Status::getStatusId('Сборка')]                
+            ])
+            ->asArray()
+            ->all()
+            ;
+        // VarDumper::dump($query->createCommand()->rawSql, 10, true); die;   
+        if ($query) {
+            $this->addError($attribute, 'Дата и время заказа уже заняты.');
+        }
+    }
+
+    // public function validateTypePay($attribute, $params)
+    // {
+    //     // нельзя забронировать если на это время есть заявка со статусом новая, в работе
+    //     $query = self::find()
+    //         ->where([
+    //             'date' => $this->date,
+    //             'time' => $this->time,
+    //             'type_pay_id' => 2
+    //             //[Status::getStatusId('Новый'), Status::getStatusId('Сборка')],
+
+    //         ])
+    //         ->asArray()
+    //         ->all();
+    //     if ($query) {
+    //         $this->addError($attribute, 'На эту дату и время пользоваться банковской картой нельзя.');
+    //     }
+    // }
 
     /**
      * Gets query for [[Outpost]].

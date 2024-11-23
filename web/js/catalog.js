@@ -15,7 +15,7 @@ $(() => {
     $.ajax({
       url: a.attr("href"),
       success(data) {
-        a.find(".count-action").html(data);
+          a.find(".count-action").html(data);
       },
     });
   });
@@ -38,7 +38,7 @@ $(() => {
       data: { id: a.data("id") },
       // dataType: dataType
       success(data) {
-        a.html(data == "1" ? "❤" : "🤍");
+        a.html(data.status ? "❤" : "🤍");
       },
     });
   });

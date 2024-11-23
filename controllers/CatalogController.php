@@ -46,6 +46,8 @@ class CatalogController extends Controller
                     $model->status = (int)(! $model->status);                
                     $model->save();
                 }
+
+                return $this->asJson(['status' => $model->status]);
             } else {
                 // like-dislike
                 if ($model = Product::findOne($id)) {
