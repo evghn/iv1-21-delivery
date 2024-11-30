@@ -2,10 +2,14 @@
 
 use app\models\Order;
 use app\models\Status;
-use yii\helpers\Html;
+use app\widgets\Alert;
+
+use yii\bootstrap5\Modal;
+use yii\bootstrap5\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\web\JqueryAsset;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
 /** @var app\modules\admin\models\OrderSearch $searchModel */
@@ -28,8 +32,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
     
 
-    <?php Pjax::begin(); ?>
+    <?php Pjax::begin([
+        'id' => 'admin-order-pjax',
+        'enablePushState' => false,
+        'timeout' => 5000,
+    ]); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?php
+        // is set flash on modal
+        if(Yii::$app->session->hasFlash('order-cancel-info')) {
+            Yii::$app->session->setFlash('info', Yii::$app->session->getFlash('order-cancel-info'));
+            Yii::$app->session->removeFlash('order-cancel-info');
+            echo Alert::widget();
+        }   
+    ?> 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -72,12 +89,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     $btn_view = Html::a("Просмотр", ['view', 'id' => $model->id], ['class' => "btn btn-primary mx-2"]);
                     $btn_apply = '';
                     $btn_cancel = '';
+                    $btn_cancel2 = '';
                     if ($model->status->id == Status::getStatusId('Новый')) {
                         $btn_apply = Html::a("Подтвердить", ['apply', 'id' => $model->id], ['class' => "btn btn-success"]);
                         $btn_cancel = Html::a("Отменить", ['cancel', 'id' => $model->id], ['class' => "btn btn-warning mx-2 my-2"]);
+                        $btn_cancel2 = Html::a("Отменить (modal)", ['cancel-modal', 'id' => $model->id], ['class' => "btn btn-warning mx-2 my-2 btn-cancel-modal"]);
                     }                   
 
-                    return $btn_view . $btn_apply . $btn_cancel;
+                    return $btn_view . $btn_apply . $btn_cancel . $btn_cancel2;
                 }
             ],
 
@@ -88,3 +107,53 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::end(); ?>
 
 </div>
+<?php
+
+    if ($dataProvider->count) {
+        Modal::begin([
+            'id' => 'cancel-modal',
+            'title' => 'Отмена заказа',
+            'size' => 'modal-lg',
+            
+        ]);
+            echo $this->render('form-modal', compact('model_cancel'));
+            
+        Modal::end();  
+        
+        
+        /* 
+            вариант модального окна с формой регистрации и входа
+        Modal::begin([
+            'id' => 'modal-login-register',
+            'title' => '',
+            'size' => 'modal-lg',
+            
+        ]);
+            echo $this->render('login-modal', compact('model_login'));
+            
+            //d-none
+            echo $this->render('register-modal', compact('model_register'));
+
+            
+            echo Html::a('Вход', '', ['class' => 'd-none btn btn-default btn-login'] );
+            
+            
+            
+            echo Html::a('Регистрация', '', ['class' => 'btn btn-default btn-register'] );
+            //click 
+
+            //d-none
+            echo $this->render('login-modal', compact('model_login'));
+            echo Html::a('Регистрация', '', ['class' => 'btn btn-default btn-register'] );
+            
+            //
+            echo $this->render('register-modal', compact('model_register'));
+            echo Html::a('Вход', '', ['class' => 'd-none btn btn-default btn-login'] );
+            
+        Modal::end();  
+         */
+        
+    
+        $this->registerJsFile('/js/cancel-modal.js', ['depends' => JqueryAsset::class]);
+    }
+?>

@@ -84,7 +84,7 @@ class Order extends \yii\db\ActiveRecord
             'comment' => 'Comment',
             'status_id' => 'Status ID',
             'user_id' => 'User ID',
-            'comment_admin' => 'Comment Admin',
+            'comment_admin' => 'Причина отмены',
             'created_at' => 'Created At',
             'check' => 'Другой вариант получения',
         ];
@@ -93,8 +93,9 @@ class Order extends \yii\db\ActiveRecord
 
     public function validateDate($attribute, $params)
     {
-        // VarDumper::dump($this->attributes, 10, true); die;
+        //  VarDumper::dump($this->attributes, 10, true); die;
         // нельзя забронировать если на это время есть заявка со статусом новая, в работе
+
         $query = self::find()
             ->where([
                 'date' => $this->date,
@@ -105,7 +106,7 @@ class Order extends \yii\db\ActiveRecord
             ->all()
             ;
         // VarDumper::dump($query->createCommand()->rawSql, 10, true); die;   
-        if ($query) {
+        if ($query && $this->status_id == Status::getStatusId('Новый')) {
             $this->addError($attribute, 'Дата и время заказа уже заняты.');
         }
     }

@@ -10,6 +10,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\VarDumper;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -47,11 +48,19 @@ class OrderController extends Controller
         $statusList = Status::getStatusList();
         $typePay = TypePay::getTypePay();
 
+        $model_cancel = null;
+        if ($dataProvider->count) {
+            // VarDumper::dump($dataProvider->models, 10, true); die;
+            $model_cancel = $this->findModel($dataProvider->models[0]->id);
+            $model_cancel->scenario = Order::SCENARIO_CANCEL;
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'statusList' => $statusList,
             'typePay' => $typePay,
+            'model_cancel' => $model_cancel
         ]);
     }
 
@@ -127,6 +136,29 @@ class OrderController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionCancelModal($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = Order::SCENARIO_CANCEL;
+
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->status_id = Status::getStatusId('Отмена');
+            if ($model->save()) {
+                Yii::$app->session->setFlash('order-cancel-info', "Статус заказ №$model->id изменен на - \"Отменен\"!");
+                $model->comment_admin = null;
+                return $this->render('form-modal', [
+                    'model_cancel' => $model
+                ]);
+            } else {
+                VarDumper::dump($model->errors, 10, true); die;
+            }
+        }
+
+        // return $this-> render('update', [
+        //     'model' => $model,
+        // ]);
     }
 
     /**
