@@ -47,12 +47,11 @@ $config = [
             ],
         ],
         'db' => $db,
-        
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
 
     ],
@@ -63,31 +62,36 @@ $config = [
             'class' => 'app\modules\admin\Module',
             'defaultRoute' => 'order' // name controller
         ],
-      
+
         'account' => [
             'class' => 'app\modules\account\Module',
             'defaultRoute' => 'order' // name controller
         ],
+        
+        'admin-lte' => [
+            'class' => 'app\modules\adminlte\Module',
+        ],
+        
     ],
 
     'controllerMap' => [
         'elfinder' => [
-			'class' => 'mihaildev\elfinder\PathController',
-			'access' => ['@'],
-			'root' => [
-				'path' => 'img',
-				'name' => 'Image'
-			],
-			// 'watermark' => [
-			// 			'source'         => __DIR__.'/logo.png', // Path to Water mark image
-			// 			 'marginRight'    => 5,          // Margin right pixel
-			// 			 'marginBottom'   => 5,          // Margin bottom pixel
-			// 			 'quality'        => 95,         // JPEG image save quality
-			// 			 'transparency'   => 70,         // Water mark image transparency ( other than PNG )
-			// 			 'targetType'     => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP, // Target image formats ( bit-field )
-			// 			 'targetMinPixel' => 200         // Target image minimum pixel size
-			// ]
-		]
+            'class' => 'mihaildev\elfinder\PathController',
+            'access' => ['@'],
+            'root' => [
+                'path' => 'img',
+                'name' => 'Image'
+            ],
+            // 'watermark' => [
+            // 			'source'         => __DIR__.'/logo.png', // Path to Water mark image
+            // 			 'marginRight'    => 5,          // Margin right pixel
+            // 			 'marginBottom'   => 5,          // Margin bottom pixel
+            // 			 'quality'        => 95,         // JPEG image save quality
+            // 			 'transparency'   => 70,         // Water mark image transparency ( other than PNG )
+            // 			 'targetType'     => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP, // Target image formats ( bit-field )
+            // 			 'targetMinPixel' => 200         // Target image minimum pixel size
+            // ]
+        ]
     ],
     'params' => $params,
 ];

@@ -50,6 +50,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
                 ? ['label' => 'Панель администратора', 'url' => ['/admin-panel']]
                 : "",
+             !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin
+                ? ['label' => 'Панель admin-lte', 'url' => ['/admin-lte']]
+                : "",
             !Yii::$app->user->isGuest && !Yii::$app->user->identity->isAdmin
                 ? ['label' => 'Личный кабинет', 'url' => ['/account']]
                 : "",
