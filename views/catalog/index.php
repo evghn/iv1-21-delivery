@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Product;
+use app\widgets\Alert;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -27,6 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'enablePushState' => false,
         'timeout' => 5000,
     ]); ?>
+
+        <?= Alert::widget() ?>
+
         <div class="block-link">
             <?= Html::a('link test1', '', ['class' => 'btn btn-primary btn-test', 'data-id' => 1]) ?>
             <?= Html::a('link test2', '', ['class' => 'btn btn-primary btn-test', 'data-id' => 2]) ?>

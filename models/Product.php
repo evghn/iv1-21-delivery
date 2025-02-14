@@ -74,6 +74,29 @@ class Product extends \yii\db\ActiveRecord
         ];
     }
 
+
+    /**
+     * Gets query for [[CartItems]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCartItems()
+    {
+        return $this->hasMany(CartItem::class, ['product_id' => 'id']);
+    }
+
+
+    /**
+     * Gets query for [[OrderShopItems]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrderShopItems()
+    {
+        return $this->hasMany(OrderShopItem::class, ['product_id' => 'id']);
+    }
+    
+
     /**
      * Gets query for [[Category]].
      *

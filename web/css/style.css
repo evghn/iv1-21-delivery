@@ -2,6 +2,11 @@
     color: red;
 } */
 
+#btn-cart {
+    cursor: pointer;
+}
+
+
 .count-action {
     color: #aaa;
     margin-left: 5px;

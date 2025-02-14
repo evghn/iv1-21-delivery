@@ -1,3 +1,16 @@
+const error_modal = (text) => {
+  $('#text-error').html(text);
+  $('#info-modal').modal('show');
+}
+
+const cartItemCount = () => $.pjax.reload("#cart-item-count", {
+  url: $("#cart-item-count").data('url'),
+  method: 'POST',
+  replace: false,
+  push: false,
+  timeout: 5000
+})
+
 $(() => {
   // $('.btn-test').on('click', function(e) {
   //     e.preventDefault();
@@ -7,6 +20,34 @@ $(() => {
 
   //     // ver 1 - return false;
   // })
+
+
+
+  $("#catalog-pjax").on("click", ".btn-cart-add", function (e) {
+    e.preventDefault();
+    const a = $(this);
+
+    $.ajax({
+      url: a.attr("href"),
+      method: 'POST',
+      success(data) {
+          if (data) {
+            if (data.status) {
+              $.pjax.reload("#catalog-pjax", {
+                push: false,
+                timeout: 5000,
+              });
+            } else {
+              error_modal(data.message);
+            }
+          }
+      },
+    });
+  });
+
+
+  $("#catalog-pjax").on('pjax:end', () => cartItemCount())
+
 
   $("#catalog-pjax").on("click", ".btn-reaction", function (e) {
     e.preventDefault();

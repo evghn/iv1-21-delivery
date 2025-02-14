@@ -28,7 +28,7 @@ use yii\bootstrap5\Html;
             : ""
       ?>
     </div>
-    <div class="w-100 mt-2">
+    <div class="w-100 mt-2 d-none">
         <?= ! Yii::$app->user->isGuest && ! Yii::$app->user->identity->isAdmin
               ? Html::a('Купить', ['/account/order/create', 'product_id' => $model->id], ['class' => 'w-100 btn btn-outline-success'])
               : ""
@@ -42,6 +42,12 @@ use yii\bootstrap5\Html;
               : ""
         ?>
         
+    </div>
+    <div class="w-100 mt-2">
+    <?= ! Yii::$app->user->isGuest && ! Yii::$app->user->identity->isAdmin
+              ? Html::a('В корзину', ['/cart/add', 'product_id' => $model->id], ['class' => 'w-100 btn btn-outline-success btn-cart-add'])
+              : ""
+        ?>
     </div>
   </div>
 </div>
