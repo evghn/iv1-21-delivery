@@ -6,6 +6,13 @@
     cursor: pointer;
 }
 
+.img_cart_product {
+    width: 200px;
+}
+
+.item {
+    margin: 5px 0;
+}
 
 .count-action {
     color: #aaa;
