@@ -7,7 +7,7 @@ use yii\bootstrap5\Html;
     <div class='d-flex gap-3'>        
         <?= Html::img('/img/' . $model->product->photo, ['class' => 'img_cart_product']) ?>
         <div class="d-flex flex-column">
-            <?= Html::a($model->product_title, ['catalog/view', 'id' => $model->product_id], ['data-pjax' => 0]) ?>
+            <?= Html::a($model->product_title, ['/catalog/view', 'id' => $model->product_id], ['data-pjax' => 0]) ?>
             <div>
                 Цена: <?= $model->product_cost ?>
             </div>

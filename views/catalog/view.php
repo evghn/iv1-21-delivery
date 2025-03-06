@@ -24,7 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'weight',
             'kilocalories',
             'shelf_life',
-            'description:ntext',
+            [   
+                'attribute' => 'description',
+                'format' => 'html',
+            ],
             [
                 'attribute' => 'category_id',
                 'value' => $categoryes[$model->category_id],
