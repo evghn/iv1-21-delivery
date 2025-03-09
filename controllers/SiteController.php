@@ -81,7 +81,7 @@ class SiteController extends Controller
             Yii::$app->session->setFlash('success', "Пользователь успешно авторизован в системе");
             return $this->redirect(
                 Yii::$app->user->identity->isAdmin
-                    ? '/admin-panel'
+                    ? '/admin'//'/admin-panel'
                     : '/account'
             );
         }

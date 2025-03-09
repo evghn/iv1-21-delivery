@@ -63,13 +63,18 @@ $config = [
             'defaultRoute' => 'order' // name controller
         ],
 
-        'account' => [
+        'user-account' => [
             'class' => 'app\modules\account\Module',
-            'defaultRoute' => 'order' // name controller
+            // 'defaultRoute' => 'order' // name controller
         ],
         
         'admin-lte' => [
             'class' => 'app\modules\adminlte\Module',
+        ],
+
+        'dmf' => [
+            'class' => 'app\modules\dmf\Module',
+            'defaultRoute' => 'item'
         ],
         
     ],
