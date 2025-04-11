@@ -40,7 +40,7 @@ class OrderController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($bg_color = null, $text = null)
     {
         $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -60,7 +60,9 @@ class OrderController extends Controller
             'dataProvider' => $dataProvider,
             'statusList' => $statusList,
             'typePay' => $typePay,
-            'model_cancel' => $model_cancel
+            'model_cancel' => $model_cancel,
+            'text' => $text,
+            'bg_color' => $bg_color,
         ]);
     }
 
@@ -80,15 +82,32 @@ class OrderController extends Controller
 
     public function actionApply($id)
     {
+        $text = "";
+        $bg_color = "";
         if ($model = Order::findOne($id)) {
-            if ($model->status_id == Status::getStatusId('Новый')) {
+            // if ($model->status_id == Status::getStatusId('Новый')) {
                 $model->status_id = Status::getStatusId('Готовый к выдаче');
-                $model->save();
-                Yii::$app->session->setFlash('success', "Статус заказ №$model->id изменен на - \"Готов к выдаче\"!");
-            }
+                if (!$model->save()) {
+                    var_dump($model->errors); die;
+                }
+                $text = "Заказ №{$model->id} успешно выполнен!";
+                $bg_color = "bg-success";
+                /*
+                [
+                    'id' => 2,
+                    'bg_color' => 'green',
+                    'text' => "ok"
+                ]
+                
+                * */
+                // Yii::$app->session->setFlash('success', "Статус заказ №$model->id изменен на - \"Готов к выдаче\"!");
+            // }
+        } else { 
+            var_dump($model); die;
         }
 
-        return $this->redirect(['index']);
+        // return $this->redirect(['index']);
+        return $this->actionIndex($bg_color, $text);
     }
 
     /**
@@ -129,7 +148,9 @@ class OrderController extends Controller
             $model->status_id = Status::getStatusId('Отмена');
             if ($model->save()) {
                 Yii::$app->session->setFlash('info', "Статус заказ №$model->id изменен на - \"Отменен\"!");
+                // return $this->redirect(['view', 'id' => $model->id]);
                 return $this->redirect(['view', 'id' => $model->id]);
+                
             }
         }
 
@@ -145,7 +166,7 @@ class OrderController extends Controller
 
         if ($this->request->isPost && $model->load($this->request->post())) {
             $model->status_id = Status::getStatusId('Отмена');
-            if ($model->save()) {
+            if ($model->save(false)) {
                 Yii::$app->session->setFlash('order-cancel-info', "Статус заказ №$model->id изменен на - \"Отменен\"!");
                 $model->comment_admin = null;
                 return $this->render('form-modal', [

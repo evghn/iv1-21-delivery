@@ -11,6 +11,7 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\web\JqueryAsset;
 use yii\widgets\Pjax;
+
 /** @var yii\web\View $this */
 /** @var app\modules\admin\models\OrderSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -20,33 +21,39 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-index">
 
-<h3>Панель администратора</h3>
+    <h3>Панель администратора</h3>
     <p>
-       <?= Html::a('Управление категориями', ['category/index'], ['class' => 'btn btn-primary']) ?>
-       <?= Html::a('Управление товарами', ['product/index'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Управление категориями', ['category/index'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Управление товарами', ['product/index'], ['class' => 'btn btn-info']) ?>
     </p>
 
     <div class="pt-5 px-3">
         <h4>Управление заказами</h4>
     </div>
 
-    
+<div class="toast-container position-fixed top-0 end-0 p-5"></div>
 
     <?php Pjax::begin([
         'id' => 'admin-order-pjax',
         'enablePushState' => false,
         'timeout' => 5000,
     ]); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>  
+
+  <div class="toast-data" data-bg-color="<?= $bg_color ?>" data-text="<?= $text ?>"></div>
+    
 
     <?php
+    /*
         // is set flash on modal
         if(Yii::$app->session->hasFlash('order-cancel-info')) {
             Yii::$app->session->setFlash('info', Yii::$app->session->getFlash('order-cancel-info'));
             Yii::$app->session->removeFlash('order-cancel-info');
             echo Alert::widget();
         }   
-    ?> 
+    */
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -60,10 +67,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'label' => "Дата и время заказа",
-                'value' => fn($model) => 
-                    Yii::$app->formatter->asDate($model->date, "dd.MM.yyyy")
-                        . " " 
-                        . $model->time,
+                'value' => fn($model) =>
+                Yii::$app->formatter->asDate($model->date, "dd.MM.yyyy")
+                    . " "
+                    . $model->time,
             ],
             [
                 'attribute' => 'user_id',
@@ -81,20 +88,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status_id',
                 'value'  => fn($model) => $model->status->title,
                 'filter' => $statusList,
-            ],         
+            ],
             [
-                'label' => "Действия", 
+                'label' => "Действия",
                 'format' => 'raw',
                 'value' => function ($model) {
-                    $btn_view = Html::a("Просмотр", ['view', 'id' => $model->id], ['class' => "btn btn-primary mx-2"]);
+                    $btn_view = Html::a("Просмотр", ['view', 'id' => $model->id], ['class' => "btn btn-primary mx-2", 'data-pjax' => 0]);
                     $btn_apply = '';
                     $btn_cancel = '';
                     $btn_cancel2 = '';
                     if ($model->status->id == Status::getStatusId('Новый')) {
-                        $btn_apply = Html::a("Подтвердить", ['apply', 'id' => $model->id], ['class' => "btn btn-success"]);
-                        $btn_cancel = Html::a("Отменить", ['cancel', 'id' => $model->id], ['class' => "btn btn-warning mx-2 my-2"]);
+                        $btn_apply = Html::a("Подтвердить", ['apply', 'id' => $model->id], ['class' => "btn btn-success btn-toast"]);
+                        $btn_cancel = Html::a("Отменить", ['cancel', 'id' => $model->id], ['class' => "btn btn-warning mx-2 my-2", 'data-pjax' => 0]);
                         $btn_cancel2 = Html::a("Отменить (modal)", ['cancel-modal', 'id' => $model->id], ['class' => "btn btn-warning mx-2 my-2 btn-cancel-modal"]);
-                    }                   
+                    }
 
                     return $btn_view . $btn_apply . $btn_cancel . $btn_cancel2;
                 }
@@ -102,26 +109,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ],
     ]); ?>
-
+<!-- 
+<script>
+    $(() => $(toast).toast('show'))
+</script> -->
 
     <?php Pjax::end(); ?>
 
 </div>
 <?php
 
-    if ($dataProvider->count) {
-        Modal::begin([
-            'id' => 'cancel-modal',
-            'title' => 'Отмена заказа',
-            'size' => 'modal-lg',
-            
-        ]);
-            echo $this->render('form-modal', compact('model_cancel'));
-            
-        Modal::end();  
-        
-        
-        /* 
+if ($dataProvider->count) {
+    Modal::begin([
+        'id' => 'cancel-modal',
+        'title' => 'Отмена заказа',
+        'size' => 'modal-lg',
+
+    ]);
+    echo $this->render('form-modal', compact('model_cancel'));
+
+    Modal::end();
+
+
+    /* 
             вариант модального окна с формой регистрации и входа
         Modal::begin([
             'id' => 'modal-login-register',
@@ -152,8 +162,9 @@ $this->params['breadcrumbs'][] = $this->title;
             
         Modal::end();  
          */
-        
-    
-        $this->registerJsFile('/js/cancel-modal.js', ['depends' => JqueryAsset::class]);
-    }
+
+
+    $this->registerJsFile('/js/cancel-modal.js', ['depends' => JqueryAsset::class]);
+    $this->registerJsFile('/js/toast.js', ['depends' => JqueryAsset::class]);
+}
 ?>
