@@ -8,7 +8,7 @@ $config = [
     'name' => "My project",
     'language' => 'ru-RU',
     'timeZone' => 'Europe/Moscow',
-    'defaultRoute' => '/catalog',
+    // 'defaultRoute' => '/catalog',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -65,7 +65,7 @@ $config = [
 
         'user-account' => [
             'class' => 'app\modules\account\Module',
-            // 'defaultRoute' => 'order' // name controller
+            'defaultRoute' => 'order' // name controller
         ],
         
         'admin-lte' => [

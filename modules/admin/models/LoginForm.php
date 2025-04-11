@@ -3,10 +3,8 @@
 namespace app\modules\admin\models;
 
 use app\models\User;
-use Symfony\Component\VarDumper\VarDumper as VarDumperVarDumper;
 use Yii;
 use yii\base\Model;
-use yii\helpers\VarDumper;
 
 /**
  * LoginForm is the model behind the login form.

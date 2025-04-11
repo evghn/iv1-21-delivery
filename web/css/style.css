@@ -108,6 +108,20 @@
     transform: scale(1.2);    
 }
 
+@keyframes toast {
+    0% {
+        transform: translateY(300px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.toast {
+    animation: toast 0.8s ease 1;
+    /* transition: opacity 5s linear; */
+}
+
 
 
 

@@ -74,7 +74,7 @@ class OrderController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate($product_id)
+    public function actionCreate($product_id = 1)
     {
         $model = new Order(['scenario' => Order::SCENARIO_OUTPOST]);
         $model->product_id = $product_id;
@@ -109,7 +109,7 @@ class OrderController extends Controller
     }
 
 
-    public function actionCreate2($product_id)
+    public function actionCreate2($product_id = 1)
     {
         $model = new Order();
         $model->product_id = $product_id;
@@ -146,7 +146,7 @@ class OrderController extends Controller
     }
 
 
-    public function actionCreate3($product_id)
+    public function actionCreate3($product_id = 1)
     {
         $model = new Order(['scenario' => Order::SCENARIO_OUTPOST]);
 
@@ -216,6 +216,17 @@ class OrderController extends Controller
         Yii::$app->session->setFlash('info', "Заказ удален!");
         return $this->redirect(['index']);
     }
+
+
+    public function actionDeleteModal($id)
+    {
+        $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('info', "Заказ удален!");
+        return $this->asJson(true);
+    }
+
+
+    
 
     /**
      * Finds the Order model based on its primary key value.

@@ -50,9 +50,11 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'date', 'time', 'type_pay_id', 'address', 'status_id', 'user_id'], 'required'],
+            [['product_id', 'date', 'time', 'type_pay_id', 'address', 'status_id', 'user_id', 'year'], 'required'],
+
             [['product_id', 'type_pay_id', 'outpost_id', 'status_id', 'user_id'], 'integer'],
             [['date', 'time', 'created_at'], 'safe'],
+            [['year'], 'integer', 'min' => date('Y')],            
             [['address', 'comment', 'comment_admin'], 'string', 'max' => 255],
             ['check', 'boolean'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
@@ -63,8 +65,12 @@ class Order extends \yii\db\ActiveRecord
             ['outpost_id', 'required', 'on' => self::SCENARIO_OUTPOST],
             ['comment', 'required', 'on' => self::SCENARIO_COMMENT],            
             ['comment_admin', 'required', 'on' => self::SCENARIO_CANCEL],
-            ['date', 'validateDate'],  
+            ['date', 'validateDate'],
+           
             // ['type_pay_id', 'validateTypePay'],  
+
+
+            
         ];
     }
 
@@ -95,22 +101,31 @@ class Order extends \yii\db\ActiveRecord
     {
         //  VarDumper::dump($this->attributes, 10, true); die;
         // нельзя забронировать если на это время есть заявка со статусом новая, в работе
-
-        $query = self::find()
-            ->where([
-                'date' => $this->date,
-                'time' => $this->time,
-                'status_id' => [Status::getStatusId('Новый'), Status::getStatusId('Сборка')]                
-            ])
-            ->asArray()
-            ->all()
-            ;
-        // VarDumper::dump($query->createCommand()->rawSql, 10, true); die;   
-        if ($query && $this->status_id == Status::getStatusId('Новый')) {
-            $this->addError($attribute, 'Дата и время заказа уже заняты.');
+        if (! Yii::$app->user->identity->isAdmin) {
+            $query = self::find()
+                ->where([
+                    'date' => $this->date,
+                    'time' => $this->time,
+                    'status_id' => [
+                        Status::getStatusId('Новый'), 
+                        Status::getStatusId('Сборка') // статус за новым 
+                    ]                
+                ])
+                ->asArray()
+                ->all()
+                ;
+                // [] , [[], []]
+            // VarDumper::dump($query->createCommand()->rawSql, 10, true); die;   
+            // if ($query && $this->status_id == Status::getStatusId('Новый')) {
+            //     $this->addError($attribute, 'Дата и время заказа уже заняты.');
+            // }
+            if ($query) {
+                $this->addError($attribute, 'Дата и время заказа уже заняты.');
+            }
         }
     }
 
+   
     // public function validateTypePay($attribute, $params)
     // {
     //     // нельзя забронировать если на это время есть заявка со статусом новая, в работе

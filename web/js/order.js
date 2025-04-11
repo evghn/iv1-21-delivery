@@ -3,14 +3,19 @@ $(() => {
         $('#order-outpost_id option:first').prop('selected', true);        
         if ($(this).prop('checked')) {
             //check
-            $('#order-comment').prop('disabled', false);
+            // $('#order-comment').prop('disabled', false);
+            $('#order-comment').parents('.comment-filed').removeClass('d-none');
+
+
             $('#order-outpost_id').removeClass('is-invalid');
             $('#order-comment').removeClass('is-valid');
             $('#form-order').yiiActiveForm('add', {"id":"order-comment","name":"comment","container":".field-order-comment","input":"#order-comment","error":".invalid-feedback","validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Необходимо заполнить «Comment»."});yii.validation.string(value, messages, {"message":"Значение «Comment» должно быть строкой.","max":255,"tooLong":"Значение «Comment» должно содержать максимум 255 символа.","skipOnEmpty":1});}});            
             $('#form-order').yiiActiveForm('remove','order-outpost_id') // id field
         } else {
             // uncheck
-            $('#order-comment').prop('disabled', true);
+            // $('#order-comment').prop('disabled', true);
+            $('#order-comment').parents('.comment-filed').addClass('d-none');
+
             $('#order-comment').removeClass('is-invalid');
             $('#order-outpost_id').removeClass('is-valid');
             $('#form-order').yiiActiveForm('remove','order-comment') // id field

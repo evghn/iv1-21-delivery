@@ -52,7 +52,7 @@ use yii\widgets\Pjax;
 
     <?= $form->field($model, 'check')->checkbox() ?>
 
-    <?= $form->field($model, 'comment')->textInput(['maxlength' => true, 'disabled' => true]) ?>   
+    <?= $form->field($model, 'comment', ['options' => ['class' => 'd-none mb-3 comment-filed']])->textInput(['maxlength' => true/* , 'disabled' => true */]) ?>   
    
     <div class="form-group">
         <?= Html::submitButton('Создать заказ', ['class' => 'btn btn-success']) ?>
